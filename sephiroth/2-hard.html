@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Small Worlds and Large Worlds | Rethinking Bayes</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Small Worlds and Large Worlds" />
+<meta name="author" content="Philip Griffith" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Hard" />
+<meta property="og:description" content="Hard" />
+<link rel="canonical" href="https://philipgriffith.github.io/RethinkingBayes/sephiroth/2-hard" />
+<meta property="og:url" content="https://philipgriffith.github.io/RethinkingBayes/sephiroth/2-hard" />
+<meta property="og:site_name" content="Rethinking Bayes" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2000-12-27T00:00:00-05:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"https://philipgriffith.github.io/RethinkingBayes/sephiroth/2-hard","headline":"Small Worlds and Large Worlds","dateModified":"2000-12-27T00:00:00-05:00","datePublished":"2000-12-27T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://philipgriffith.github.io/RethinkingBayes/sephiroth/2-hard"},"author":{"@type":"Person","name":"Philip Griffith"},"description":"Hard","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/RethinkingBayes/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/RethinkingBayes/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/RethinkingBayes/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/RethinkingBayes/assets/apple-touch-icon.png">
+  
+  <!-- MathJax -->
+  
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ]
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+
+  <!-- Google Analytics-->
+  
+</head>
+
+<body>
+
+	<nav class="nav">
+  <div class="nav-container">
+    <a href="/RethinkingBayes/">
+      <h2 class="nav-title">Rethinking Bayes</h2>
+    </a>
+    <ul>
+      <li><a href="/RethinkingBayes/">Chapters</a></li>
+	  <li><a href="/RethinkingBayes/resources">Resources</a></li>
+	  <li><a href="/RethinkingBayes/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+	<main>
+		<div class="post">
+
+	
+
+	<h1 class="post-title">2. Small Worlds and Large Worlds</h1>
+	<div class="post-line"></div>
+
+	<h1 id="hard">Hard</h1>
+
+<p><strong>2H1.</strong> Suppose there are two species of panda bear. Both are equally common in the wild and live in the same places. They look exactly alike and eat the same food, and there is yet no genetic assay capable of telling them apart. They differ however in their family sizes. Species A gives birth to twins 10% of the time, otherwise birthing a single infant. Species B births twins 20% of the time, otherwise birthing singleton infants. Assume these numbers are known with certainty, from many years of field research. Now suppose you are managing a captive panda breeding program. You have a new female panda of unknown species, and she has just given birth to twins. What is the probability that her next birth will also be twins?</p>
+
+<p>We first need to compute the probability that our panda will have twins, then use that information to compute the probability that our panda will have twins again, <em>given</em> that she’s already had one set.</p>
+
+<script type="math/tex; mode=display">Pr(twins) = Pr(twins \mid A) \cdot Pr(A) + Pr(twins \mid B) \cdot Pr(B) \tag{1} \label{1}</script>
+
+<script type="math/tex; mode=display">Pr(A) = Pr(B) = 0.5 \tag{2} \label{2}</script>
+
+<script type="math/tex; mode=display">Pr(twins \mid A) = 0.1 \tag{3} \label{3}</script>
+
+<script type="math/tex; mode=display">Pr(twins \mid B) = 0.2</script>
+
+<script type="math/tex; mode=display">Pr(twins) = 0.1 \cdot 0.5 + 0.2 \cdot 0.5 = 0.15</script>
+
+<p>We can now update the probabilities that our panda is a member of species A or species B, given that she has had twins:</p>
+
+<script type="math/tex; mode=display">Pr(A \mid twins) = \frac{Pr(twins \mid A) \cdot Pr(A)}{Pr(twins)} = \frac{0.1 \cdot 0.5}{0.15} = \frac{0.05}{0.15} = \frac13 \tag{4} \label{4}</script>
+
+<script type="math/tex; mode=display">Pr(B \mid twins) = 1 - Pr(A \mid twins) = 1 - \frac13 = \frac23</script>
+
+<p>We can see that, after the birth of twins, we now believe our panda is twice as likely to be a member of species B than species A. We’ll use these new estimates about her species membership to update the probability that she will have twins. Given $\eqref{1}$:</p>
+
+<script type="math/tex; mode=display">\mathbf{ Pr(twins) = 0.1 \cdot \frac13 + 0.2 \cdot \frac23 = \frac16 } \tag{5} \label{5}</script>
+
+<hr />
+
+<p><strong>2H2.</strong> Recall all the facts from the problem above. Now compute the probability that the panda we have is from species A, assuming we have observed only the first birth and that it was twins.</p>
+
+<p>We computed this probability while solving 2H1. It is simply $\eqref{4}$:</p>
+
+<script type="math/tex; mode=display">\mathbf{ Pr(A \mid twins) = \frac13 }</script>
+
+<hr />
+
+<p><strong>2H3.</strong> Continuing on from the previous problem, suppose the same panda mother has a second birth and that it is not twins, but a singleton infant. Compute the posterior probability that this panda is species A.</p>
+
+<p>We can compute this probability by using the information we learned in 2H1. The key is to use the probabilities computed <em>after</em> observing our panda has had her first set of twins.</p>
+
+<script type="math/tex; mode=display">Pr(A \mid singleton) = \frac{Pr(singleton \mid A) \cdot Pr(A)}{Pr(singleton)}</script>
+
+<script type="math/tex; mode=display">Pr(singleton \mid A) = 1 - Pr(twins \mid A) = 1 - 0.1 = 0.9 \tag{$\mathit{v.s.}$ \ref{3}}</script>
+
+<script type="math/tex; mode=display">Pr(A) = \frac13 = 0.\bar3 \tag{$\mathit{v.s.}$ \ref{4}}</script>
+
+<script type="math/tex; mode=display">Pr(singleton) = 1 - Pr(twins) = 1 - \frac16 = \frac56 = 0.8\bar3 \tag{$\mathit{v.s.}$ \ref{5}}</script>
+
+<script type="math/tex; mode=display">\mathbf{ Pr(A \mid singleton) = \frac{0.9 \cdot 0.\bar3}{0.8\bar3} = 0.36 } \tag{6} \label{6}</script>
+
+<hr />
+
+<p><strong>2H4.</strong> A common boast of Bayesian statisticians is that Bayesian inference makes it easy to use all of the data, even if the data are of different types. So suppose now that a veterinarian comes along who has a new genetic test that she claims can identify the species of our mother panda. But the test, like all tests, is imperfect. This is the information you have about the test:</p>
+
+<ul>
+  <li>– The probability it correctly identifies a species A panda is 0.8.
+<br /></li>
+  <li>– The probability it correctly identifies a species B panda is 0.65.</li>
+</ul>
+
+<p>The vet administers the test to your panda and tells you that the test is positive for species A. First ignore your previous information from the births and compute the posterior probability that your panda is species A. Then redo your calculation, now using the birth data as well.</p>
+
+<p>It will be helpful to compute a table to show the possible results of the veterinarian’s test:</p>
+
+<p>\begin{array}{c|c|c}
+&amp; \text{Test=A} &amp; \text{Test=B} \\
+\hline
+A &amp; 0.8 &amp; 0.2 \\
+B &amp; 0.35 &amp; 0.65 \\
+\end{array}</p>
+
+<p>To complete the first part of the question, we can use our initial estimates about whether our panda is a member of species A or species B to compute the updated probability, given the results of the veterinarian test:</p>
+
+<script type="math/tex; mode=display">Pr(A \mid Test=A) = \frac{Pr(Test=A \mid A) \cdot Pr(A)}{Pr(Test=A)}</script>
+
+<script type="math/tex; mode=display">Pr(A) = 0.5 \tag{$\mathit{v.s.}$ \ref{2}}</script>
+
+<script type="math/tex; mode=display">Pr(Test=A \mid A) = 0.8</script>
+
+<script type="math/tex; mode=display">Pr(Test=A) = Pr(Test=A \mid A) \cdot Pr(A) + Pr(Test=A \mid B) \cdot Pr(B)</script>
+
+<script type="math/tex; mode=display">Pr(Test=A) = 0.8 \cdot 0.5 + 0.35 \cdot 0.5 = 0.4 + 0.175 = 0.575</script>
+
+<script type="math/tex; mode=display">\mathbf{ Pr(A \mid Test=A) = \frac{0.8 \cdot 0.5}{0.575} = \frac{0.4}{0.575} \approx 0.70 }</script>
+
+<p>By including the information about our panda’s births, we can gain a better estimate of her species membership. All we need to do is use the information we learned in 2H3. The key is to use the probabilities computed <em>after</em> observing our panda has had twins and then a singleton.</p>
+
+<script type="math/tex; mode=display">Pr(A) = 0.36 \tag{$\mathit{v.s.}$ \ref{6}}</script>
+
+<script type="math/tex; mode=display">Pr(B) = 1 - Pr(A) = 1 - 0.36 = 0.64</script>
+
+<script type="math/tex; mode=display">Pr(Test=A) = 0.8 \cdot 0.36 + 0.35 \cdot 0.64 = 0.288 + 0.224 = 0.512</script>
+
+<script type="math/tex; mode=display">\mathbf{ Pr(A \mid Test=A) = \frac{0.8 \cdot 0.36}{0.512} = \frac{0.288}{0.512} = 0.5625 }</script>
+
+
+</div>
+
+<div class="pagination">
+	
+	<a href="/RethinkingBayes/sephiroth/2-medium" class="left arrow">&#8592;</a>
+	
+	
+	<a href="/RethinkingBayes/sephiroth/3-overview" class="right arrow">&#8594;</a>
+	
+	<a href="#" class="top">Top</a>
+</div>
+	</main>
+
+	<footer>
+  <span>
+    &copy; <time datetime="2020-07-17 01:23:41 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
+  </span>
+</footer>
+
+	
+</body>
+</html>
