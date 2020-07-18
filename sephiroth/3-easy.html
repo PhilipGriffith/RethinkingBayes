@@ -151,7 +151,7 @@
 
 <p><a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html" target="_blank"><code class="highlighter-rouge">Documentation for np.mean</code></a></p>
 
-<p><strong><center>p = 0.001</center></strong></p>
+<p><strong><center>0.1% lies below 0.2</center></strong></p>
 
 <p><img src="/RethinkingBayes/assets/images/3e1.png" alt="3E1" title="3E1" /></p>
 
@@ -162,7 +162,7 @@
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">samples</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">)</span>
 <span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span></code></pre></figure>
 
-<p><strong><center>p = 0.119</center></strong></p>
+<p><strong><center>11.9% lies above 0.8</center></strong></p>
 
 <p><img src="/RethinkingBayes/assets/images/3e2.png" alt="3E2" title="3E2" /></p>
 
@@ -173,7 +173,7 @@
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">((</span><span class="n">samples</span> <span class="o">&gt;</span> <span class="mf">0.2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">samples</span> <span class="o">&lt;</span> <span class="mf">0.8</span><span class="p">))</span>
 <span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span></code></pre></figure>
 
-<p><strong><center>p = 0.88</center></strong></p>
+<p><strong><center>88% lies between 0.2 and 0.8</center></strong></p>
 
 <p><img src="/RethinkingBayes/assets/images/3e3.png" alt="3E3" title="3E3" /></p>
 
@@ -197,7 +197,7 @@
 <p>This is equivalent to asking the value of p that lies below 80%.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="mi">100</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">value</span><span class="p">)</span></code></pre></figure>
+<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">value</span><span class="p">)</span></code></pre></figure>
 
 <p><strong><center>p = 0.758</center></strong></p>
 
@@ -245,7 +245,7 @@
 
 	<footer>
   <span>
-    &copy; <time datetime="2020-07-17 01:23:41 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
+    &copy; <time datetime="2020-07-17 20:04:14 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
   </span>
 </footer>
 
