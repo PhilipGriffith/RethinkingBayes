@@ -80,38 +80,38 @@
 <p>As in Chapter 2, we’ll compute the grid approximation of the posterior distribution using this helper function written by the wonderful people at PyMC3:</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">compute_grid_approximation</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">success</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">tosses</span><span class="o">=</span><span class="mi">9</span><span class="p">):</span>
-	<span class="s">"""
-	Parameters:
-		prior: np.array
-			A distribution representing our state of knowledge
-			before seeing the data. The number of items
-			should be the same as the number of grid points.
-		success: integer
-			Number of successes.
-			The default is 6.
-		tosses: integer
-			Number of tosses (i.e. successes + failures).
-			The default is 9.
-	Returns: 
-		p_grid: np.array
-			An evenly-spaced parameter grid between 0 and 1.
-		posterior: np.array
-			The posterior distribution.
-	"""</span>
-	<span class="c1"># First, define the parameter grid
-</span>	<span class="n">p_grid</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">prior</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-	<span class="c1"># Then compute the likelihood at each point in the grid
-</span>	<span class="n">likelihood</span> <span class="o">=</span> <span class="n">stats</span><span class="p">.</span><span class="n">binom</span><span class="p">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">success</span><span class="p">,</span> <span class="n">tosses</span><span class="p">,</span> <span class="n">p_grid</span><span class="p">)</span>
-	<span class="c1"># Compute the product of the likelihood and the prior
-</span>	<span class="n">unstd_posterior</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">*</span> <span class="n">prior</span>
-	<span class="c1"># Finally, standardize the posterior so that it sums to 1
-</span>	<span class="n">posterior</span> <span class="o">=</span> <span class="n">unstd_posterior</span> <span class="o">/</span> <span class="n">unstd_posterior</span><span class="p">.</span><span class="nb">sum</span><span class="p">()</span>
+    <span class="s">"""
+    Parameters:
+        prior: np.array
+            A distribution representing our state of knowledge
+            before seeing the data. The number of items
+            should be the same as the number of grid points.
+        success: integer
+            Number of successes.
+            The default is 6.
+        tosses: integer
+            Number of tosses (i.e. successes + failures).
+            The default is 9.
+    Returns: 
+        p_grid: np.array
+            An evenly-spaced parameter grid between 0 and 1.
+        posterior: np.array
+            The posterior distribution.
+    """</span>
+    <span class="c1"># First, define the parameter grid
+</span>    <span class="n">p_grid</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">prior</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1"># Then compute the likelihood at each point in the grid
+</span>    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">stats</span><span class="p">.</span><span class="n">binom</span><span class="p">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">success</span><span class="p">,</span> <span class="n">tosses</span><span class="p">,</span> <span class="n">p_grid</span><span class="p">)</span>
+    <span class="c1"># Compute the product of the likelihood and the prior
+</span>    <span class="n">unstd_posterior</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">*</span> <span class="n">prior</span>
+    <span class="c1"># Finally, standardize the posterior so that it sums to 1
+</span>    <span class="n">posterior</span> <span class="o">=</span> <span class="n">unstd_posterior</span> <span class="o">/</span> <span class="n">unstd_posterior</span><span class="p">.</span><span class="nb">sum</span><span class="p">()</span>
 
-	<span class="k">return</span> <span class="n">p_grid</span><span class="p">,</span> <span class="n">posterior</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">tosses</span></code></pre></figure>
+    <span class="k">return</span> <span class="n">p_grid</span><span class="p">,</span> <span class="n">posterior</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">tosses</span></code></pre></figure>
 
 <p>We’ll also use this helper function to visualize the results:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">xvar</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">()</span>
     <span class="n">ax</span><span class="p">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'grey'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.35</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">.</span><span class="n">hist</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
@@ -119,13 +119,12 @@
     <span class="n">yt</span> <span class="o">=</span> <span class="nb">list</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">.</span><span class="n">get_yticks</span><span class="p">()))</span>
     <span class="n">yt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">ax</span><span class="p">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
-    <span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Probability of Water'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">f'Probability of </span><span class="si">{</span><span class="n">xvar</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
     <span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Frequency'</span><span class="p">)</span></code></pre></figure>
 
 <p>The questions below rely on a set of samples specified in the R code 3.27 box found on p. 69 of <em>Statistical Rethinking</em>. We’ll generate the samples using the following code:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1"># Setting a random seed allows the results to be reproducible
-</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">var</span> <span class="o">=</span> <span class="s">'Water'</span>
 <span class="n">size</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="c1"># Create a prior distribution of 1000 1's
 # This will also create a posterior distribution with 1000 points
@@ -133,8 +132,10 @@
 <span class="n">pg</span><span class="p">,</span> <span class="n">po</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">compute_grid_approximation</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">success</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">tosses</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
 <span class="c1"># Take 1000 samples (with replacement) from the posterior
 # The posterior provides the probability for each value in the parameter grid
-</span><span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">(</span><span class="n">pg</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">po</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code></pre></figure>
+# Setting a random seed allows the results to be reproducible
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">(</span><span class="n">pg</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">po</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xvar</span><span class="o">=</span><span class="n">var</span><span class="p">)</span></code></pre></figure>
 
 <p><a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html" target="_blank"><code class="highlighter-rouge">Documentation for np.random.seed</code></a>
 <br />
@@ -147,7 +148,7 @@
 <p><strong>3E1.</strong> How much posterior probability lies below p = 0.2?</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">samples</span> <span class="o">&lt;</span> <span class="mf">0.2</span><span class="p">)</span>
-<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span></code></pre></figure>
+<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">xvar</span><span class="o">=</span><span class="n">var</span><span class="p">)</span></code></pre></figure>
 
 <p><a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html" target="_blank"><code class="highlighter-rouge">Documentation for np.mean</code></a></p>
 
@@ -160,7 +161,7 @@
 <p><strong>3E2.</strong> How much posterior probability lies above p = 0.8?</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">samples</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">)</span>
-<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span></code></pre></figure>
+<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">xvar</span><span class="o">=</span><span class="n">var</span><span class="p">)</span></code></pre></figure>
 
 <p><strong><center>11.9% lies above 0.8</center></strong></p>
 
@@ -171,7 +172,7 @@
 <p><strong>3E3.</strong> How much posterior probability lies between p = 0.2 and p = 0.8?</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">((</span><span class="n">samples</span> <span class="o">&gt;</span> <span class="mf">0.2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">samples</span> <span class="o">&lt;</span> <span class="mf">0.8</span><span class="p">))</span>
-<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span></code></pre></figure>
+<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">xvar</span><span class="o">=</span><span class="n">var</span><span class="p">)</span></code></pre></figure>
 
 <p><strong><center>88% lies between 0.2 and 0.8</center></strong></p>
 
@@ -182,7 +183,7 @@
 <p><strong>3E4.</strong> 20% of the posterior probability lies below which value of p?</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
-<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">value</span><span class="p">)</span></code></pre></figure>
+<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">xvar</span><span class="o">=</span><span class="n">var</span><span class="p">)</span></code></pre></figure>
 
 <p><a href="https://numpy.org/doc/stable/reference/generated/numpy.percentile.html" target="_blank"><code class="highlighter-rouge">Documentation for np.percentile</code></a></p>
 
@@ -197,7 +198,7 @@
 <p>This is equivalent to asking the value of p that lies below 80%.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="mi">100</span><span class="o">-</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">value</span><span class="p">)</span></code></pre></figure>
+<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">xvar</span><span class="o">=</span><span class="n">var</span><span class="p">)</span></code></pre></figure>
 
 <p><strong><center>p = 0.758</center></strong></p>
 
@@ -208,7 +209,7 @@
 <p><strong>3E6.</strong> Which values of p contain the narrowest interval equal to 66% of the posterior probability?</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">values</span> <span class="o">=</span> <span class="n">az</span><span class="p">.</span><span class="n">hdi</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">0.66</span><span class="p">)</span>
-<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></code></pre></figure>
+<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">xvar</span><span class="o">=</span><span class="n">var</span><span class="p">)</span></code></pre></figure>
 
 <p><a href="https://arviz-devs.github.io/arviz/generated/arviz.hdi.html" target="_blank"><code class="highlighter-rouge">Documentation for az.hdi</code></a></p>
 
@@ -223,7 +224,7 @@
 <p>If there is an equal posterior probability both below and above the interval, then the remaining intervals comprise the lowest and highest 17% of the posterior (17 + 66 + 17 = 100). We need to compute the interval between those two percentiles.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="mi">100</span><span class="o">-</span><span class="mi">17</span><span class="p">])</span>
-<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></code></pre></figure>
+<span class="n">plot_interval</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">xvar</span><span class="o">=</span><span class="n">var</span><span class="p">)</span></code></pre></figure>
 
 <p><strong><center>p = [0.504, 0.774]</center></strong></p>
 
@@ -245,7 +246,7 @@
 
 	<footer>
   <span>
-    &copy; <time datetime="2020-07-17 20:04:14 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
+    &copy; <time datetime="2020-07-20 22:39:38 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
   </span>
 </footer>
 

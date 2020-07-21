@@ -90,34 +90,34 @@
 <p>Moreover, whenever an exercise calls for a grid approximation of the posterior distribution, we’ll compute and plot it using these helper functions written by the wonderful people at PyMC3:</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">compute_grid_approximation</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">success</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">tosses</span><span class="o">=</span><span class="mi">9</span><span class="p">):</span>
-	<span class="s">"""
-	Parameters:
-		prior: np.array
-			A distribution representing our state of knowledge
-			before seeing the data. The number of items
-			should be the same as the number of grid points.
-		success: integer
-			Number of successes.
-			The default is 6.
-		tosses: integer
-			Number of tosses (i.e. successes + failures).
-			The default is 9.
-	Returns: 
-		p_grid: np.array
-			An evenly-spaced parameter grid between 0 and 1.
-		posterior: np.array
-			The posterior distribution.
-	"""</span>
-	<span class="c1"># First, define the parameter grid
-</span>	<span class="n">p_grid</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">prior</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-	<span class="c1"># Then compute the likelihood at each point in the grid
-</span>	<span class="n">likelihood</span> <span class="o">=</span> <span class="n">stats</span><span class="p">.</span><span class="n">binom</span><span class="p">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">success</span><span class="p">,</span> <span class="n">tosses</span><span class="p">,</span> <span class="n">p_grid</span><span class="p">)</span>
-	<span class="c1"># Compute the product of the likelihood and the prior
-</span>	<span class="n">unstd_posterior</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">*</span> <span class="n">prior</span>
-	<span class="c1"># Finally, standardize the posterior so that it sums to 1
-</span>	<span class="n">posterior</span> <span class="o">=</span> <span class="n">unstd_posterior</span> <span class="o">/</span> <span class="n">unstd_posterior</span><span class="p">.</span><span class="nb">sum</span><span class="p">()</span>
+    <span class="s">"""
+    Parameters:
+        prior: np.array
+            A distribution representing our state of knowledge
+            before seeing the data. The number of items
+            should be the same as the number of grid points.
+        success: integer
+            Number of successes.
+            The default is 6.
+        tosses: integer
+            Number of tosses (i.e. successes + failures).
+            The default is 9.
+    Returns: 
+        p_grid: np.array
+            An evenly-spaced parameter grid between 0 and 1.
+        posterior: np.array
+            The posterior distribution.
+    """</span>
+    <span class="c1"># First, define the parameter grid
+</span>    <span class="n">p_grid</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">prior</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1"># Then compute the likelihood at each point in the grid
+</span>    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">stats</span><span class="p">.</span><span class="n">binom</span><span class="p">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">success</span><span class="p">,</span> <span class="n">tosses</span><span class="p">,</span> <span class="n">p_grid</span><span class="p">)</span>
+    <span class="c1"># Compute the product of the likelihood and the prior
+</span>    <span class="n">unstd_posterior</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">*</span> <span class="n">prior</span>
+    <span class="c1"># Finally, standardize the posterior so that it sums to 1
+</span>    <span class="n">posterior</span> <span class="o">=</span> <span class="n">unstd_posterior</span> <span class="o">/</span> <span class="n">unstd_posterior</span><span class="p">.</span><span class="nb">sum</span><span class="p">()</span>
 
-	<span class="k">return</span> <span class="n">p_grid</span><span class="p">,</span> <span class="n">posterior</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">tosses</span>
+    <span class="k">return</span> <span class="n">p_grid</span><span class="p">,</span> <span class="n">posterior</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">tosses</span>
 
 <span class="k">def</span> <span class="nf">plot_grid_approximation</span><span class="p">(</span><span class="n">p_grid</span><span class="p">,</span> <span class="n">posterior</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">tosses</span><span class="p">,</span> <span class="n">x_label</span><span class="p">):</span>
     <span class="s">"""
@@ -278,7 +278,7 @@
 
 	<footer>
   <span>
-    &copy; <time datetime="2020-07-17 20:04:14 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
+    &copy; <time datetime="2020-07-20 22:39:38 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
   </span>
 </footer>
 
