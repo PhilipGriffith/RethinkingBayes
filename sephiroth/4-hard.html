@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Linear Models | Rethinking Bayes</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Linear Models" />
+<meta name="author" content="Philip Griffith" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Hard." />
+<meta property="og:description" content="Hard." />
+<link rel="canonical" href="https://philipgriffith.github.io/RethinkingBayes/sephiroth/4-hard" />
+<meta property="og:url" content="https://philipgriffith.github.io/RethinkingBayes/sephiroth/4-hard" />
+<meta property="og:site_name" content="Rethinking Bayes" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2000-12-19T00:00:00-05:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"https://philipgriffith.github.io/RethinkingBayes/sephiroth/4-hard","headline":"Linear Models","dateModified":"2000-12-19T00:00:00-05:00","datePublished":"2000-12-19T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://philipgriffith.github.io/RethinkingBayes/sephiroth/4-hard"},"author":{"@type":"Person","name":"Philip Griffith"},"description":"Hard.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/RethinkingBayes/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/RethinkingBayes/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/RethinkingBayes/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/RethinkingBayes/assets/apple-touch-icon.png">
+  
+  <!-- MathJax -->
+  
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ]
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+
+  <!-- Google Analytics-->
+  
+</head>
+
+<body>
+
+	<nav class="nav">
+  <div class="nav-container">
+    <a href="/RethinkingBayes/">
+      <h2 class="nav-title">Rethinking Bayes</h2>
+    </a>
+    <ul>
+      <li><a href="/RethinkingBayes/">Chapters</a></li>
+	  <li><a href="/RethinkingBayes/resources">Resources</a></li>
+	  <li><a href="/RethinkingBayes/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+	<main>
+		<div class="post">
+
+	
+
+	<h1 class="post-title">4. Linear Models</h1>
+	<div class="post-line"></div>
+
+	<h1 id="hard">Hard.</h1>
+
+<p><strong>4H1.</strong> The weights listed below were recorded in the !Kung census, but heights were not recorded for these individuals. Provide predicted heights and 89% intervals (either HPDI or PI) for each of these individuals. That is, fill in the table below, using model-based predictions.</p>
+
+<p>\begin{array}{c|c|c|c}
+\text{Individual} &amp; \text{weight} &amp; \text{expected height} &amp; \text{89% interval} \\
+\hline
+1 &amp; 46.95 &amp; &amp; \\
+2 &amp; 43.72 &amp; &amp; \\
+3 &amp; 64.78 &amp; &amp; \\
+4 &amp; 32.59 &amp; &amp; \\
+5 &amp; 54.63 &amp; &amp; \\
+\end{array}</p>
+
+<hr />
+
+<p><strong>4H2.</strong> Select out all the rows in the <code class="highlighter-rouge">Howell1</code> data with ages below 18 years of age. If you do it right, you should end up with a new data frame with 192 rows in it.</p>
+
+<p>(a) Fit a linear regression to these data, using <code class="highlighter-rouge">map</code>. Present and interpret the estimates. For every 10 units of increase in weight, how much taller does the model predict a child gets?</p>
+
+<p>(b) Plot the raw data, with height on the vertical axis and weight on the horizontal axis. Superimpose the MAP regression line and 89% HPDI for the mean. Also superimpose the 89% interval for predicted heights.</p>
+
+<p>(c) What aspects of the model fit concern you? Describe the kinds of assumptions you would change, if any, to improve the model. You don’t have to write any new code. Just explain what the model appears to be doing a bad job of, and what you hypothesize would be a better model.</p>
+
+<hr />
+
+<p><strong>4H3.</strong> Suppose a colleague of yours, who works on allometry, glances at the practice problems just above. Your colleague exclaims, “That’s silly. Everyone knows that it’s only the <em>logarithm</em> of body weight that scales with height!” Let’s take your colleague’s advice and see what happens.</p>
+
+<p>(a) Model the relationship between height (cm) and the natural logarithm of weight (log-kg). Use the entire <code class="highlighter-rouge">Howell1</code> data frame, all 544 rows, adults and non-adults. Fit this model, using quadratic approximation:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+h_i &\sim Normal(\mu_i, \sigma) \\
+\mu_i &= \alpha + \beta \, log(w_i) \\
+\alpha &\sim Normal(178, 100) \\
+\beta &\sim Normal(0, 100) \\
+\sigma &\sim Uniform(0, 50)
+\end{align} %]]></script>
+
+<p>where $h_i$ is the height of individual <em>i</em> and $w_i$ is the weight (in kg) of individual <em>i</em>. The function for computing a natural log in R is just <code class="highlighter-rouge">log</code>. Can you interpret the resulting estimates?</p>
+
+<p>(b) Begin with this plot:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">plot</span><span class="p">(</span><span class="w"> </span><span class="n">height</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">=</span><span class="n">Howell1</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="o">=</span><span class="n">col.alpha</span><span class="p">(</span><span class="n">rangi2</span><span class="p">,</span><span class="m">0.4</span><span class="p">)</span><span class="w"> </span><span class="p">)</span></code></pre></figure>
+
+<p>Then use samples from the quadratic approximate posterior of the model in (a) to superimpose on the plot: (1) the predicted mean height as a function of weight, (2) the 97% HPDI for the mean, and
+(3) the 97% HPDI for predicted heights.</p>
+
+
+</div>
+
+<div class="pagination">
+	
+	<a href="/RethinkingBayes/sephiroth/4-medium" class="left arrow">&#8592;</a>
+	
+	
+	<a href="#" class="top">Top</a>
+</div>
+	</main>
+
+	<footer>
+  <span>
+    &copy; <time datetime="2020-07-25 13:02:43 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
+  </span>
+</footer>
+
+	
+</body>
+</html>

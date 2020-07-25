@@ -11,15 +11,15 @@
 <meta property="og:title" content="Small Worlds and Large Worlds" />
 <meta name="author" content="Philip Griffith" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Easy" />
-<meta property="og:description" content="Easy" />
+<meta name="description" content="Easy." />
+<meta property="og:description" content="Easy." />
 <link rel="canonical" href="https://philipgriffith.github.io/RethinkingBayes/sephiroth/2-easy" />
 <meta property="og:url" content="https://philipgriffith.github.io/RethinkingBayes/sephiroth/2-easy" />
 <meta property="og:site_name" content="Rethinking Bayes" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2000-12-29T00:00:00-05:00" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","url":"https://philipgriffith.github.io/RethinkingBayes/sephiroth/2-easy","headline":"Small Worlds and Large Worlds","dateModified":"2000-12-29T00:00:00-05:00","datePublished":"2000-12-29T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://philipgriffith.github.io/RethinkingBayes/sephiroth/2-easy"},"author":{"@type":"Person","name":"Philip Griffith"},"description":"Easy","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","url":"https://philipgriffith.github.io/RethinkingBayes/sephiroth/2-easy","headline":"Small Worlds and Large Worlds","dateModified":"2000-12-29T00:00:00-05:00","datePublished":"2000-12-29T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://philipgriffith.github.io/RethinkingBayes/sephiroth/2-easy"},"author":{"@type":"Person","name":"Philip Griffith"},"description":"Easy.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -74,7 +74,7 @@
 	<h1 class="post-title">2. Small Worlds and Large Worlds</h1>
 	<div class="post-line"></div>
 
-	<h1 id="easy">Easy</h1>
+	<h1 id="easy">Easy.</h1>
 
 <p>For some of the questions below, we’ll use the <a href="https://en.wikipedia.org/wiki/Conditional_probability" target="_blank">Kolmogorov definition of conditional probability</a>:</p>
 
@@ -85,26 +85,40 @@
 <p><strong>2E1.</strong> Which of the expressions below correspond to the statement: <em>the probability of rain on Monday</em>?</p>
 
 <ul>
-  <li>1) Pr(rain)
+  <li>
+    <p>1) Pr(rain)</p>
+
     <ul>
       <li><em>The probability of rain</em>.</li>
     </ul>
   </li>
-  <li>2) <strong>Pr(rain | Monday)</strong>
+</ul>
+<ul>
+  <li>
+    <p>2) <strong>Pr(rain | Monday)</strong></p>
+
     <ul>
       <li><em>The probability of rain, given that it’s Monday</em>.</li>
     </ul>
   </li>
-  <li>3) Pr(Monday | rain)
+</ul>
+<ul>
+  <li>
+    <p>3) Pr(Monday | rain)</p>
+
     <ul>
       <li><em>The probability it’s Monday, given that it’s raining</em>.</li>
     </ul>
   </li>
-  <li>4) $\mathbf{\frac{Pr(rain, Monday)}{Pr(Monday)}}$
+</ul>
+<ul>
+  <li>
+    <p>4) $\mathbf{\frac{Pr(rain, \, Monday)}{Pr(Monday)}}$</p>
+
     <ul>
       <li>By substituting the concepts for the variables in $\eqref{K}$, we get:
         <ul>
-          <li>$\frac{Pr(rain, Monday)}{Pr(Monday)} = Pr(rain \mid Monday)$</li>
+          <li>$\frac{Pr(rain, \, Monday)}{Pr(Monday)} = Pr(rain \mid Monday)$</li>
         </ul>
       </li>
       <li>We can now see that (4) is equivalent to (2).</li>
@@ -117,22 +131,36 @@
 <p><strong>2E2.</strong> Which of the following statements corresponds to the expression: Pr(Monday | rain)?</p>
 
 <ul>
-  <li>1) The probability of rain on Monday.
+  <li>
+    <p>1) The probability of rain on Monday.</p>
+
     <ul>
       <li>Pr(rain | Monday).</li>
     </ul>
   </li>
-  <li>2) The probability of rain, given that it is Monday.
+</ul>
+<ul>
+  <li>
+    <p>2) The probability of rain, given that it is Monday.</p>
+
     <ul>
       <li>This is equivalent to (1).</li>
     </ul>
   </li>
-  <li>3) <strong>The probability that it is Monday, given that it is raining.</strong>
+</ul>
+<ul>
+  <li>
+    <p>3) <strong>The probability that it is Monday, given that it is raining.</strong></p>
+
     <ul>
       <li>Pr(Monday | rain).</li>
     </ul>
   </li>
-  <li>4) The probability that it is Monday and that it is raining.
+</ul>
+<ul>
+  <li>
+    <p>4) The probability that it is Monday and that it is raining.</p>
+
     <ul>
       <li>Pr(Monday, rain).</li>
     </ul>
@@ -144,17 +172,27 @@
 <p><strong>2E3.</strong> Which of the expressions below correspond to the statement: <em>the probability that it is Monday, given that it is raining</em>?</p>
 
 <ul>
-  <li>1) <strong>Pr(Monday | rain)</strong>
+  <li>
+    <p>1) <strong>Pr(Monday | rain)</strong></p>
+
     <ul>
       <li><em>The probability it’s Monday, given that it’s raining</em>.</li>
     </ul>
   </li>
-  <li>2) Pr(rain | Monday)
+</ul>
+<ul>
+  <li>
+    <p>2) Pr(rain | Monday)</p>
+
     <ul>
       <li><em>The probability of rain, given that it’s Monday</em>.</li>
     </ul>
   </li>
-  <li>3) $Pr(rain \mid Monday) \cdot Pr(Monday)$
+</ul>
+<ul>
+  <li>
+    <p>3) $Pr(rain \mid Monday) \cdot Pr(Monday)$</p>
+
     <ul>
       <li>By rearranging $\eqref{K}$, we get:
         <ul>
@@ -169,7 +207,11 @@
       <li>We can now see that (3) is <em>the probability that it’s raining and that it’s Monday</em>.</li>
     </ul>
   </li>
-  <li>4) $\mathbf{\frac{Pr(rain \mid Monday) \cdot Pr(Monday)}{Pr(rain)}}$
+</ul>
+<ul>
+  <li>
+    <p>4) $\mathbf{\frac{Pr(rain \mid Monday) \, Pr(Monday)}{Pr(rain)}}$</p>
+
     <ul>
       <li>Given what we learned in (3), we know that:
         <ul>
@@ -178,18 +220,22 @@
       </li>
       <li>And so we can simplify (4) through substitution and rearrange to get:
         <ul>
-          <li>$\frac{Pr(rain, Monday)}{Pr(rain)} = \frac{Pr(Monday, rain)}{Pr(rain)}$</li>
+          <li>$\frac{Pr(rain, \, Monday)}{Pr(rain)} = \frac{Pr(Monday, \, rain)}{Pr(rain)}$</li>
         </ul>
       </li>
       <li>Given $\eqref{K}$, we know that:
         <ul>
-          <li>$\frac{Pr(Monday, rain)}{Pr(rain)} = Pr(Monday \mid rain)$</li>
+          <li>$\frac{Pr(Monday, \, rain)}{Pr(rain)} = Pr(Monday \mid rain)$</li>
         </ul>
       </li>
       <li>We can now see that (4) is equivalent to (1).</li>
     </ul>
   </li>
-  <li>5) $\frac{Pr(Monday \mid rain) \cdot Pr(rain)}{Pr(Monday)}$
+</ul>
+<ul>
+  <li>
+    <p>5) $\frac{Pr(Monday \mid rain) \, Pr(rain)}{Pr(Monday)}$</p>
+
     <ul>
       <li>This has the same structure as (4), but the concepts have switched places.</li>
       <li>This implies that (5) is the opposite of (4): <em>the probability of rain, given that it’s Monday</em>.</li>
@@ -221,7 +267,7 @@
 
 	<footer>
   <span>
-    &copy; <time datetime="2020-07-20 22:39:38 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
+    &copy; <time datetime="2020-07-25 13:02:43 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
   </span>
 </footer>
 
