@@ -85,13 +85,19 @@ y_i &\sim Normal(\mu, \sigma) \\
 \sigma &\sim Uniform(0, 10)
 \end{align} %]]></script>
 
+<p>$y_i \sim Normal(\mu, \sigma)$ is the likelihood.</p>
+
 <hr />
 
 <p><strong>4E2.</strong> In the model definition just above, how many parameters are in the posterior distribution?</p>
 
+<p>There are two parameters in the posterior distribution: $\mu$ and $\sigma$.</p>
+
 <hr />
 
 <p><strong>4E3.</strong> Using the model definition above, write down the appropriate form of Bayes’ theorem that includes the proper likelihood and priors.</p>
+
+<script type="math/tex; mode=display">Pr(\mu, \sigma \mid y) = \frac{\prod_i Normal(y_i \mid \mu, \sigma) \, Normal(\mu \mid 0, 10) \, Uniform(\sigma \mid 0, 10)}{\iint \prod_i Normal(y_i \mid \mu, \sigma) \, Normal(\mu \mid 0, 10) \, Uniform(\sigma \mid 0, 10) \, d \mu d \sigma}</script>
 
 <hr />
 
@@ -106,9 +112,13 @@ y_i &\sim Normal(\mu, \sigma) \\
 \sigma &\sim Uniform(0, 10)
 \end{align} %]]></script>
 
+<p>$\mu_i = \alpha + \beta x_i$ is the linear model.</p>
+
 <hr />
 
 <p><strong>4E5.</strong> In the model definition just above, how many parameters are in the posterior distribution?</p>
+
+<p>There are three parameters in the posterior distribution: $\alpha$, $\beta$ and $\sigma$.</p>
 
 
 </div>
@@ -126,7 +136,7 @@ y_i &\sim Normal(\mu, \sigma) \\
 
 	<footer>
   <span>
-    &copy; <time datetime="2020-07-25 13:02:43 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
+    &copy; <time datetime="2020-08-04 19:10:30 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
   </span>
 </footer>
 
