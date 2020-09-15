@@ -76,6 +76,15 @@
 
 	<h1 id="medium">Medium.</h1>
 
+<p>The code used to answer the questions below relies on these Python libraries:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pymc3</span> <span class="k">as</span> <span class="n">pm</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="n">az</span>
+
+<span class="c1"># I'm using this code to make plotting easy in a Jupyter notebook
+</span><span class="o">%</span><span class="n">config</span> <span class="n">InlineBackend</span><span class="p">.</span><span class="n">figure_format</span> <span class="o">=</span> <span class="s">'retina'</span>
+<span class="n">az</span><span class="p">.</span><span class="n">style</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="s">'arviz-darkgrid'</span><span class="p">)</span></code></pre></figure>
+
 <p><strong>4M1.</strong> For the model definition below, simulate observed heights from the prior (not the posterior).</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
@@ -85,33 +94,106 @@ y_i &\sim Normal(\mu, \sigma) \\
 \sigma &\sim Uniform(0, 10)
 \end{align} %]]></script>
 
+<p><img src="/RethinkingBayes/assets/images/4m1.png" alt="4M1" title="4M1" /></p>
+
 <hr />
 
-<p><strong>4M2.</strong> Translate the model just above into a <code class="highlighter-rouge">map</code> formula.</p>
+<p><strong>4M2.</strong> Translate the model just above into a <del><code class="highlighter-rouge">map</code></del> <code class="highlighter-rouge">PyMC3</code> formula.</p>
+
+<p>The PyMC3 code for both the model and the plot of simulated heights displayed in 4M1 is as follows:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">with</span> <span class="n">pm</span><span class="p">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">m_4M1</span><span class="p">:</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">Normal</span><span class="p">(</span><span class="s">'mu'</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">Uniform</span><span class="p">(</span><span class="s">'sigma'</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">Normal</span><span class="p">(</span><span class="s">'heights'</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="n">sigma</span><span class="p">)</span>
+    <span class="n">trace_4M1</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">sample_prior_predictive</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s">'heights'</span><span class="p">],</span>
+        <span class="n">random_seed</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">az</span><span class="p">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace_4M1</span><span class="p">)</span></code></pre></figure>
 
 <hr />
 
 <p><strong>4M3.</strong> Translate the <code class="highlighter-rouge">map</code> model formula below into a mathematical model definition.</p>
 
 <figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">flist</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">alist</span><span class="p">(</span><span class="w">
-	</span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">dnorm</span><span class="p">(</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">sigma</span><span class="w"> </span><span class="p">),</span><span class="w">
-	</span><span class="n">mu</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="w">
-	</span><span class="n">a</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">dnorm</span><span class="p">(</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="p">),</span><span class="w">
-	</span><span class="n">b</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">dunif</span><span class="p">(</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">),</span><span class="w">
-	</span><span class="n">sigma</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">dunif</span><span class="p">(</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="w"> </span><span class="p">)</span><span class="w">
+    </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">dnorm</span><span class="p">(</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">sigma</span><span class="w"> </span><span class="p">),</span><span class="w">
+    </span><span class="n">mu</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="w">
+    </span><span class="n">a</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">dnorm</span><span class="p">(</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="p">),</span><span class="w">
+    </span><span class="n">b</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">dunif</span><span class="p">(</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">),</span><span class="w">
+    </span><span class="n">sigma</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">dunif</span><span class="p">(</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span><span class="p">)</span></code></pre></figure>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+y &\sim Normal(\mu, \sigma) \\
+\mu &= \alpha + \beta x \\
+\alpha &\sim Normal(0, 10) \\
+\beta &\sim Uniform(0, 1) \\
+\sigma &\sim Uniform(0, 50)
+\end{align} %]]></script>
 
 <hr />
 
 <p><strong>4M4.</strong> A sample of students is measured for height each year for 3 years. After the third year, you want to fit a linear regression predicting height using year as a predictor. Write down the mathematical model definition for this regression, using any variable names and priors you choose. Be prepared to defend your choice of priors.</p>
 
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+height_i &\sim Normal(\mu_i, \sigma) \\
+\mu &= \alpha + \beta \cdot year_i \\
+\alpha &\sim Normal(171.69, 10.04) \\
+\beta &\sim Normal(0, 2) \\
+\sigma &\sim Uniform(0, 15)
+\end{align} %]]></script>
+
+<p>Let’s assume the students attend university and have therefore completed puberty. Data for the $\alpha$ prior comes from <a href="https://ourworldindata.org/human-height#height-is-normally-distributed" target="_blank">Our World in Data: Human Height</a>. Data for p in the equations below comes from <a href="https://ourworldindata.org/gender-ratio#gender-ratio-across-the-world" target="_blank">Our World in Data: Gender Ratio</a>. Assuming the height measurements are independent, the mean and standard deviation of adult height can be computed using <a href="https://stats.stackexchange.com/questions/205126/standard-deviation-for-weighted-sum-of-normal-distributions" target="blank">the following equations</a>:</p>
+
+<script type="math/tex; mode=display">\mu = p \mu_{male} + (1 - p) \mu_{female}</script>
+
+<script type="math/tex; mode=display">\sigma = \sqrt{ p \sigma^2_{male} + (1 - p) \sigma^2_{female} + p(1 - p)(\mu_{male} - \mu_{female})^2 }</script>
+
+<p>For the mean:</p>
+
+<script type="math/tex; mode=display">\mu = \frac{51}{100} 178.4 + \frac{49}{100} 164.7 = 171.69</script>
+
+<p>For the standard deviation:</p>
+
+<script type="math/tex; mode=display">\sigma = \sqrt{ \frac{51}{100} 7.59^2 + \frac{49}{100} 7.07^2 + \frac{51}{100} \cdot \frac{49}{100} (178.4 - 164.7)^2 }</script>
+
+<script type="math/tex; mode=display">\sigma = \sqrt{ 29.38 + 24.49 + 46.90 } = \sqrt{ 100.78 } = 10.04</script>
+
+<p>Though some students will continue to grow taller while at university, the <em>average</em> relationship between height and year for all students will likely be close to zero. Centering a narrow $\beta$ prior at zero reflects this assumption.</p>
+
+<p>The $\sigma$ prior assumes that 95% of heights will fall within 30cm of the mean height, which mimics the empirical distribution of height among adults.</p>
+
 <hr />
 
 <p><strong>4M5.</strong> Now suppose I tell you that the average height in the first year was 120cm and that every student got taller each year. Does this information lead you to change your choice of priors? How?</p>
 
+<p>This new information implies that our assumption about the students attending university is false: according to the <a href="https://www.cdc.gov/growthcharts/cdc_charts.htm" target="_blank">CDC Growth Charts</a>, they’re likely between five and nine years old! The new model updates the mean height and uses an exponential distribution to insure that the $\beta$ prior is not only positive but has an average value of 5cm, as estimated by the growth charts.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+height_i &\sim Normal(\mu_i, \sigma) \\
+\mu &= \alpha + \beta \cdot year_i \\
+\alpha &\sim Normal(120, 10) \\
+\beta &\sim Exponential(5) \\
+\sigma &\sim Uniform(0, 15)
+\end{align} %]]></script>
+
 <hr />
 
 <p><strong>4M6.</strong> Now suppose I tell you that the variance among heights for students of the same age is never more than 64cm. How does this lead you to revise your priors?</p>
+
+<p>This new information allows us to update the $\sigma$ prior. Because the standard deviation is simply the square root of the variance ($\sqrt{64} = 8$), we can update the model accordingly.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+height_i &\sim Normal(\mu_i, \sigma) \\
+\mu &= \alpha + \beta \cdot year_i \\
+\alpha &\sim Normal(120, 10) \\
+\beta &\sim Exponential(5) \\
+\sigma &\sim Uniform(0, 8)
+\end{align} %]]></script>
 
 
 </div>
@@ -129,7 +211,7 @@ y_i &\sim Normal(\mu, \sigma) \\
 
 	<footer>
   <span>
-    &copy; <time datetime="2020-08-04 19:10:30 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
+    &copy; <time datetime="2020-09-14 22:33:03 -0400">2020</time> Philip Griffith. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/" target="_blank">Tale</a> theme.
   </span>
 </footer>
 
